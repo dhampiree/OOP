@@ -21,6 +21,8 @@ class CategoryTree {
 		    die('Connect Error ('.$this->connection->connect_errno.') '.$this->connection->connect_error);
 		}
 
+		$this->connection->set_charset("utf8");
+
 		if ($root_category_id === false) {
 			if ($result = $this->connection->query('
 				SELECT id AS cat_id

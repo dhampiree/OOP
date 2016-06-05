@@ -2,7 +2,7 @@
 function autoload($className)
 {
     //Писати шлях до кореневої папки проекту
-    $rd='../../
+    $rd='../../';
     $className = ltrim($className, '\\');
     $fileName  = '';
     $namespace = '';

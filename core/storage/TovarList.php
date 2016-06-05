@@ -6,14 +6,11 @@
 	private $list;
 	
 	function __construct($cat_id) {
-<<<<<<< HEAD
 		$this->connection = new \mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-=======
-		$this->connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
->>>>>>> 78b4624dd05e214fe21943d70270e0e059b706cf
 		if ($this->connection->connect_error) {
 			die('Connect Error ('.$this->connection->connect_errno.') '.$this->connection->connect_error);
 		}
+		$this->connection->set_charset("utf8");
 		
 		$this->list = $this->get_exemplars($cat_id);
 		$goods = $this->g_idxArr($this->list);
@@ -40,15 +37,9 @@
 	}
 
 	private function get_exemplars($cat_id) {
-<<<<<<< HEAD
 		$cat_id = intval($cat_id);
 		if ($cat_id == 0) {
 			error_log('ERROR: get_exemplars: category id can not be');
-=======
-		
-		if (!is_integer($cat_id) and $cat_id != 0) {
-			error_log('ERROR: get_tovar: category id is not integer');
->>>>>>> 78b4624dd05e214fe21943d70270e0e059b706cf
 			exit();
 		}
 		
@@ -118,20 +109,12 @@
 		# var_dump($query);
 		$ret_val = array();
 		$result = $this->connection->query($query);
-		
-<<<<<<< HEAD
+
 		if ($result) {
 			while($row = $result->fetch_assoc())
 				array_push($ret_val, $row);
 			$result->close();
 		}
-		
-=======
-		while($row = $result->fetch_assoc())
-			array_push($ret_val, $row);
-		
-		$result->close();
->>>>>>> 78b4624dd05e214fe21943d70270e0e059b706cf
 		return $ret_val;
 	}
 	

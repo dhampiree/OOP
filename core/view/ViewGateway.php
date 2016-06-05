@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
-=======
-include('autoloader.php');
 
->>>>>>> 78b4624dd05e214fe21943d70270e0e059b706cf
 namespace core\view;
 
 use core\logic\Bridge;
@@ -14,26 +10,19 @@ class ViewGateway {
 	private $tovars;
 	private $bridge;
 	private $unpacker;
-<<<<<<< HEAD
 	private $pointer;
-=======
->>>>>>> 78b4624dd05e214fe21943d70270e0e059b706cf
 
 	function __construct() {
 		$this->tovars = false;
 		$this->bridge = new Bridge();
 		$this->unpacker = new JSON_handler();
-<<<<<<< HEAD
 		$this->pointer = 0;
-=======
->>>>>>> 78b4624dd05e214fe21943d70270e0e059b706cf
 	}
 
 	function loadTovarsOfCategory($category) {
 		$this->tovars = $this->bridge->getTovars($category);
 	}	
 
-<<<<<<< HEAD
 	function simpleHTML($class = false) {
 		if (!$this->tovars) return false;
 		$class = ($class === false) ? '' : ' class = "'.$class.'"';
@@ -122,8 +111,6 @@ class ViewGateway {
 		return true;
 	}
 
-=======
->>>>>>> 78b4624dd05e214fe21943d70270e0e059b706cf
 	function toHTML() {
 		if (!$this->tovars) return false;
 
