@@ -20,6 +20,7 @@ class CategoriesModel
         if ($this->connection->connect_error) {
             die('Connect Error ('.$this->connection->connect_errno.') '.$this->connection->connect_error);
         }
+        $this->connection->set_charset('utf8');
     }
 
 
@@ -67,6 +68,14 @@ class CategoriesModel
 		';
         error_log($query);
         $this->connection->query($query);
+    }
+
+    function echoCategoriesOptions() {
+
+        $result = $this->connection->query('SELECT * FROM Categories');
+        while ($row = $result->fetch_assoc()) {
+            echo '<option value="'.$row['id'].'">('.$row['id'].') '.$row['title'].'</option>';
+        }
     }
 
 

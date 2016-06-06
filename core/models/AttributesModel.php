@@ -32,9 +32,9 @@ class AttributesModel
             return false;
         }
 
-        $query = 'INSERT INTO Attribute (title, categ_id) VALUES ('.$attribute_name.','.$cat_id.')';
+        $query = 'INSERT INTO Attribute (title, categ_id) VALUES (\''.$attribute_name.'\','.$cat_id.')';
 
-        $this->connection->query($query);
+        return $this->connection->query($query);
     }
 
 
@@ -68,7 +68,7 @@ class AttributesModel
         $separator    = ($namestring == '' or $parentstring == '') ? '' : ', ';
 
         $query = '
-			UPDATE Categories
+			UPDATE Attribute
 			SET '.$namestring.$separator.$parentstring.'
 			WHERE id = '.$id;
 
@@ -78,9 +78,10 @@ class AttributesModel
     }
 
     function attributeIDByTitle($name){
-        $query = 'SELECT title FROM Attribute';
+        $query = 'SELECT * FROM Attribute';
 
-        if($result = $this->connection->query($query)){
+        $result = $this->connection->query($query);
+        if($result !== false){
             $result->data_seek(0);
 
             while ($row = $result->fetch_assoc()) {
