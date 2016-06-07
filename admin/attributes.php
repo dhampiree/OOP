@@ -10,62 +10,6 @@
 	$categoriesHandler = new CategoriesModel();
 
 
-/*
-	function newAttr($attr_name, $cat_id) {
-
-		$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-		// стандартна перевірка підключення до бази даних
-		if ($connection->connect_error) {
-		    die('Connect Error ('.$connection->connect_errno.') '.$connection->connect_error);
-		}
-
-		$query = '
-		INSERT INTO Attribute (title, categ_id)
-		VALUES ("'.$attr_name.'", '.intval($cat_id).')
-		';
-
-		$connection->query($query);
-	}
-
-	function removeAttr($attr_id) {
-
-		$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-		// стандартна перевірка підключення до бази даних
-		if ($connection->connect_error) {
-		    die('Connect Error ('.$connection->connect_errno.') '.$connection->connect_error);
-		}
-
-		$query = '
-		DELETE FROM Attribute
-		WHERE id = '.intval($attr_id);
-
-		$connection->query($query);
-	}
-
-	function updateAttr($id, $name=false, $parent=false) {
-
-		$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-		// стандартна перевірка підключення до бази даних
-		if ($connection->connect_error) {
-		    die('Connect Error ('.$connection->connect_errno.') '.$connection->connect_error);
-		}
-
-		$namestring = ($name === false) ? '' : 'title = "'.$name.'"';
-		$parentstring = ($parent === false) ? '' : 'categ_id = "'.$parent.'"';
-		$separator = ($namestring == '' or $parentstring == '') ? '' : ', ';
-
-		$query = '
-			UPDATE Attribute
-			SET '.$namestring.$separator.$parentstring.'
-			WHERE id = '.$id.'
-		';
-		$connection->query($query);
-	}
-//*/
-
 	if (isset($_POST['delete'])) {
 		if (isset($_POST['id'])) {
 			$id = intval($_POST['id']);
