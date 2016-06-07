@@ -78,5 +78,28 @@ class CategoriesModel
         }
     }
 
+    function categoryNameByID($cat_id) {
+
+        $result = $this->connection->query('SELECT title FROM Categories WHERE id="'.intval($cat_id).'" LIMIT 1');
+        if ($result !== false) {
+            $row = $result->fetch_assoc();
+            return $row['title'];
+        } else return 1;
+    }
+
+    function defaultCategoryID() {
+        $query = '
+			SELECT id
+			FROM Categories
+			ORDER BY id DESC
+			LIMIT 1
+		';
+
+        $result = $this->connection->query($query);
+        if ($result !== false) {
+            $row = $result->fetch_assoc();
+            return $row['id'];
+        } else return 1;
+    }
 
 }

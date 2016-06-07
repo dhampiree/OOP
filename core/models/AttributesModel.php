@@ -10,9 +10,6 @@ class AttributesModel
     function __construct(){
 
 
-        ini_set('display_errors',1);
-        error_reporting(E_ALL);
-
         $this->connection = new \mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if ($this->connection->connect_error) {
             die('Connect Error ('.$this->connection->connect_errno.') '.$this->connection->connect_error);
@@ -21,10 +18,6 @@ class AttributesModel
     }
 
 
-    function test(){
-        echo "test";
-    }
-//*
     function newAttribute($attribute_name, $cat_id) {
 
         if (!is_integer($cat_id)) {
@@ -61,6 +54,7 @@ class AttributesModel
         $this->connection->query($query);
     }
 
+
     function updateAttribute($id, $name=false, $category_id=false) {
 
         $namestring   = ($name   === false) ? '' : 'title = "'.$name.'"';
@@ -76,6 +70,7 @@ class AttributesModel
 
         $this->connection->query($query);
     }
+
 
     function attributeIDByTitle($name){
         $query = 'SELECT * FROM Attribute';
@@ -95,18 +90,6 @@ class AttributesModel
 
     }
 
-    function categoriesList() {
-        $list = array();
-
-        $result = $this->connection->query('SELECT * FROM Categories');
-        if ($result !== false) {
-            while ($row = $result->fetch_assoc()) {
-                array_push($list, $row);
-               // echo '<option value="'.$row['id'].'">('.$row['id'].') '.$row['title'].'</option>';
-            }
-        }
-        return $list;
-    }
 
     function attributesList() {
 
