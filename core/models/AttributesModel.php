@@ -18,7 +18,7 @@ class AttributesModel
     }
 
 
-    function newAttribute($attribute_name, $cat_id) {
+    function addAttribute($attribute_name, $cat_id) {
 
         if (!is_integer($cat_id)) {
             error_log('ERROR! Wrong parent parameter.');
@@ -31,7 +31,7 @@ class AttributesModel
     }
 
 
-    function removeAttribute($attribute_id) {
+    function deleteAttribute($attribute_id) {
         if (!is_integer($attribute_id)) {
             error_log('ERROR! Wrong attribute parameter.');
             return false;
@@ -43,7 +43,7 @@ class AttributesModel
     }
 
 
-    function removeAttributeByCategoryID($cat_id){
+    function deleteAttributeByCategoryID($cat_id){
         if (!is_integer($cat_id)) {
             error_log('ERROR! Wrong category parameter.');
             return false;
@@ -72,7 +72,7 @@ class AttributesModel
     }
 
 
-    function attributeIDByTitle($name){
+    function selectAattributeIDByTitle($name){
         $query = 'SELECT * FROM Attribute';
 
         $result = $this->connection->query($query);
@@ -91,17 +91,46 @@ class AttributesModel
     }
 
 
-    function attributesList() {
+    function  selectAttributesWithParams($id, $categoryID, $title, $count = 20, $offsetCount = 0){
 
-        $list = array();
-        $result = $this->connection->query('SELECT * FROM Attribute');
-        if ($result !== false) {
-            while ($row = $result->fetch_assoc()) {
-                array_push($list, $row);
-                //echo '<option value="'.$row['id'].'">('.$row['id'].') '.$row['title'].'</option>';
-            }
+        $query = "SELECT * FROM Attribute WHERE 1 AND ";
+
+        if(is_int($id)){
+            $query .= "id = $id AND ";
         }
-        return $list;
+
+        if($categoryID){
+            $query .= "categ_id = $categoryID AND ";
+        }
+
+        if($title){
+            $query .= "title = '$title' AND ";
+        }
+
+        if(!is_int($count))
+            $count = 20;
+        if(!is_int($offsetCount))
+            $offsetCount = 0;
+
+        $query = substr($query,0,strlen($query)-4);
+        $query .= " LIMIT $offsetCount, $count";
+
+        $result = $this->connection->query($query);
+
+        if($result !== false){
+
+            $result->data_seek(0);
+            $list = array();
+            while($row = $result->fetch_assoc()){
+                array_push($list, $row);
+            }
+
+            $result->close();
+            return $list;
+        }
+
+        return array("ERROR");
+
     }
 
 

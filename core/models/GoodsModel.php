@@ -34,6 +34,40 @@ class GoodsModel
         $this->connection->query($query);
     }
 
+    function selectGoodsWithParams($id, $title, $count = 20, $offsetCount = 0){
+        $query = "SELECT * FROM Goods WHERE 1 AND ";
+
+        if($id & is_int($id))
+            $query .= "id = $id AND ";
+
+        if($title)
+            $query .= "title = '$title' AND ";
+
+        if(!is_int($count))
+            $count = 20;
+        if(!is_int($offsetCount))
+            $offsetCount = 0;
+
+        $query = substr($query,0,strlen($query)-4);
+        $query .= " LIMIT $offsetCount, $count";
+
+        $result = $this->connection->query($query);
+
+        if($result !== false){
+            $result->data_seek(0);
+            $list = array();
+            while($row = $result->fetch_assoc()){
+                array_push($list, $row);
+            }
+
+            $result->close();
+            return $list;
+        }
+
+        return array("ERROR");
+    }
+
+
     function echoGoodsOptions() {
 
         $result = $this->connection->query('SELECT * FROM Goods');

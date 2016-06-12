@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: anton
- * Date: 12.06.16
- * Time: 16:06
- */
 
 namespace core\models;
 
@@ -52,11 +46,13 @@ class OrdersModel
 
 
     function orderListWithParams($id, $dateBegin, $dateEnd, $contractor_id, $confirmed, $count=20, $offsetCount=0){
-        $query = "SELECT * FROM Orders WHERE ";
+        $query = "SELECT * FROM Orders WHERE 1 AND ";
 
         if(is_int($id)){
-            $query .= "id = $id AND";
+            $query .= "id = $id AND ";
         }
+
+
 
         if($dateBegin && $dateEnd){
             $dateBegin = strtotime($dateBegin);
@@ -66,18 +62,25 @@ class OrdersModel
 
             if($equalDate){
                 $query .= "date = '".date("Y-m-d", $dateBegin)."' AND ";
-            } else {
-                $query .= "(date BETWEEN '".date("Y-m-d", $dateBegin)."' and '".date("Y-m-d", $dateEnd)."') AND ";
             }
 
+        } elseif (!$dateBegin && $dateEnd)
+        {
+            $dateEnd   = strtotime($dateEnd);
+            $query .= "date <= '".date("Y-m-d", $dateEnd)."' AND ";
+        } elseif ($dateBegin && !$dateEnd)
+        {
+            $dateBegin   = strtotime($dateBegin);
+            $query .= "date => '".date("Y-m-d", $dateBegin)."' AND ";
         }
 
+
         if($contractor_id){
-            $query .= "contractor_id = $contractor_id AND";
+            $query .= "contractor_id = $contractor_id AND ";
         }
 
         if($confirmed){
-            $query .= "confirmed = $confirmed AND";
+            $query .= "confirmed = $confirmed AND ";
         }
 
         if(!is_int($count))

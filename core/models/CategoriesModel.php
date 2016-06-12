@@ -21,7 +21,8 @@ class CategoriesModel
         $this->connection->close();
     }
 
-    function newCategory($category_name, $parent_cat_id=0) {
+
+    function addCategory($category_name, $parent_cat_id=0) {
 
         if (!is_integer($parent_cat_id)) {
             error_log('ERROR! Wrong parent parameter.');
@@ -33,7 +34,8 @@ class CategoriesModel
         $this->connection->query($query);
     }
 
-    function removeCategory($category_id) {
+
+    function deleteCategory($category_id) {
         if (!is_integer($category_id)) {
             error_log('ERROR! Wrong category parameter.');
             return false;
@@ -46,6 +48,7 @@ class CategoriesModel
 
         $this->connection->query($query);
     }
+
 
     function updateCategory($id, $name=false, $parent=false) {
 
@@ -63,6 +66,7 @@ class CategoriesModel
         $this->connection->query($query);
     }
 
+
     function echoCategoriesOptions() {
 
         $result = $this->connection->query('SELECT * FROM Categories');
@@ -70,6 +74,7 @@ class CategoriesModel
             echo '<option value="'.$row['id'].'">('.$row['id'].') '.$row['title'].'</option>';
         }
     }
+
 
     function categoryNameByID($cat_id) {
 
@@ -79,6 +84,50 @@ class CategoriesModel
             return $row['title'];
         } else return 1;
     }
+
+
+    function  selectCategoriesWithParams($id, $parentCatID, $title, $count = 20, $offsetCount = 0){
+
+        $query = "SELECT * FROM Categories WHERE 1 AND ";
+
+        if(is_int($id)){
+            $query .= "id = $id AND ";
+        }
+
+        if($parentCatID){
+            $query .= "parent_cat_id = $parentCatID AND ";
+        }
+
+        if($title){
+            $query .= "title = '$title' AND ";
+        }
+
+        if(!is_int($count))
+            $count = 20;
+        if(!is_int($offsetCount))
+            $offsetCount = 0;
+
+        $query = substr($query,0,strlen($query)-4);
+        $query .= " LIMIT $offsetCount, $count";
+
+        $result = $this->connection->query($query);
+
+        if($result !== false){
+
+            $result->data_seek(0);
+            $list = array();
+            while($row = $result->fetch_assoc()){
+                array_push($list, $row);
+            }
+
+            $result->close();
+            return $list;
+        }
+
+        return array("ERROR");
+
+    }
+
 
     function defaultCategoryID() {
         $query = '

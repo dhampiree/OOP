@@ -16,7 +16,7 @@ class ContractorsModel
     }
 
 
-    function addContactor($director, $contactPerson, $contactPhone, $comment){
+    function addContractor($director, $contactPerson, $contactPhone, $comment){
 
         $query = 'INSERT INTO Contractors(director, contact_person, contact_phone, comment)
                   VALUES ("'.$director.'","'.$contactPerson.'","'.$contactPhone.'","'.$comment.'")';
@@ -26,8 +26,8 @@ class ContractorsModel
     }
 
 
-    function selectContactorByID($id){
-        if (!is_numeric($id))
+    function selectContractorByID($id){
+        if (!is_int($id))
             return array();
 
         $query = 'SELECT * FROM Contractors WHERE id='.$id.' LIMIT 1';
@@ -48,12 +48,57 @@ class ContractorsModel
     }
 
 
-    /**
-     * @param $count - Количество возвращаемых записей. Целое число. Значение по умолчанию 20.
-     * @param $offsetCount - Отступ в выборке. Целое число. Значение по умолчанию 0.
-     * @return array - Возвращает ассоциативный массив. В случае ошибки массив будет пуст.
-     */
-    function contactorsList($count = 20, $offsetCount = 0){
+    function selectContractorWithParams($id, $director, $contactPerson, $contactPhone, $comment, $count = 20, $offsetCount = 0){
+
+        $query = "SELECT * FROM Contractors WHERE 1 AND ";
+
+        if(is_int($id)){
+            $query .= "id = $id AND ";
+        }
+
+        if($director){
+            $query .= "director = '$director' AND ";
+        }
+
+        if($contactPerson){
+            $query .= "contact_person = '$contactPerson' AND ";
+        }
+
+        if($contactPhone){
+            $query .= "contact_phone = '$contactPhone' AND ";
+        }
+
+        if($comment){
+            $query .= "comment = '$comment' AND ";
+        }
+
+
+        if(!is_int($count))
+            $count = 20;
+        if(!is_int($offsetCount))
+            $offsetCount = 0;
+
+        $query = substr($query,0,strlen($query)-4);
+        $query .= " LIMIT $offsetCount, $count";
+
+        $result = $this->connection->query($query);
+
+        if($result !== false){
+            $result->data_seek(0);
+            $list = array();
+            while($row = $result->fetch_assoc()){
+                array_push($list, $row);
+            }
+
+            $result->close();
+            return $list;
+        }
+
+        return array("ERROR");
+    }
+
+
+    function contractorList($count = 20, $offsetCount = 0){
         if(!is_int($count))
             $count = 20;
         if(!is_int($offsetCount))
@@ -79,7 +124,7 @@ class ContractorsModel
     }
 
 
-    function updateContactorByID($id, $director, $contactPerson, $contactPhone, $comment){
+    function updateContractorByID($id, $director, $contactPerson, $contactPhone, $comment){
 
         $query = "UPDATE Contractors
                   SET
@@ -93,7 +138,8 @@ class ContractorsModel
 
     }
 
-    function deleteContactorByID($id){
+
+    function deleteContractorByID($id){
         if(!is_int($id))
             return false;
 
