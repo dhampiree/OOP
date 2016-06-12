@@ -104,6 +104,7 @@ class AttributesModel
         return $list;
     }
 
+
     function echoAttributesList() {
 
         $query = '

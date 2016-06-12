@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: anton
- * Date: 10.06.16
- * Time: 23:23
- */
 
 namespace core\models;
 
@@ -31,7 +25,6 @@ class ContractorsModel
 
     }
 
-    //SELECT * FROM `Contractors` WHERE 1
 
     function selectContactorByID($id){
         if (!is_numeric($id))
@@ -52,13 +45,6 @@ class ContractorsModel
             return $contactor;
         }
 
-    }
-
-    function selectContactorsBy($director = null, $contactPerson = null, $contactPhone = null ){
-        // проверить на безопасность
-
-       // if($director)
-       //     $director =
     }
 
 
@@ -92,6 +78,20 @@ class ContractorsModel
         return array();
     }
 
+
+    function updateContactorByID($id, $director, $contactPerson, $contactPhone, $comment){
+
+        $query = "UPDATE Contractors
+                  SET
+                  director='$director',
+                  contact_person='$contactPerson',
+                  contact_phone='$contactPhone',
+                  comment='$comment'
+                  WHERE id = $id;";
+
+        return $this->connection->query($query);
+
+    }
 
     function deleteContactorByID($id){
         if(!is_int($id))

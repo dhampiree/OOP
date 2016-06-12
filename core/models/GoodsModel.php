@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: anton
- * Date: 07.06.16
- * Time: 10:58
- */
 
 namespace core\models;
 
@@ -40,4 +34,11 @@ class GoodsModel
         $this->connection->query($query);
     }
 
+    function echoGoodsOptions() {
+
+        $result = $this->connection->query('SELECT * FROM Goods');
+        while ($row = $result->fetch_assoc()) {
+            echo '<option value="'.$row['id'].'">('.$row['id'].') '.$row['title'].'</option>';
+        }
+    }
 }

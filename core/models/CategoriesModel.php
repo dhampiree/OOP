@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: anton
- * Date: 05.06.16
- * Time: 20:09
- */
-
 
 namespace core\models;
 
