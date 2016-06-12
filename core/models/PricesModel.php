@@ -33,7 +33,7 @@ class PricesModel
             $query .= "	value = $value AND ";
 
         if($type)
-            $query .= "	value = '$type' AND ";
+            $query .= "	type = '$type' AND ";
 
         if(!is_int($count))
             $count = 20;

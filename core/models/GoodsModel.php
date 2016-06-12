@@ -18,19 +18,19 @@ class GoodsModel
 
 
     function addGoods($goodsTitle){
-        $query = 'INSERT INTO  Goods (title) VALUES ("'.$goodsTitle.'") ';
+        $query = "INSERT INTO  Goods (title) VALUES ('".$goodsTitle."') ";
         $this->connection->query($query);
     }
 
 
     function deleteGoods($goodsID){
-        $query = 'DELETE FROM Goods WHERE id='.$goodsID;
+        $query = "DELETE FROM Goods WHERE id=".$goodsID;
         $this->connection->query($query);
     }
 
 
     function updateGoods($goodsID,$newTitle){
-        $query = 'UPDATE Goods SET title="'.$newTitle.'" WHERE id='.$goodsID;
+        $query = "UPDATE Goods SET title='".$newTitle."' WHERE id=".$goodsID;
         $this->connection->query($query);
     }
 

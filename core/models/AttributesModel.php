@@ -31,6 +31,23 @@ class AttributesModel
     }
 
 
+    function updateAttribute($id, $name=false, $category_id=false) {
+
+        $namestring   = ($name   === false) ? '' : 'title = "'.$name.'"';
+        $parentstring = (!is_numeric($category_id) & $category_id === false) ? '' : 'categ_id = "'.$category_id.'"';
+        $separator    = ($namestring == '' or $parentstring == '') ? '' : ', ';
+
+        $query = '
+			UPDATE Attribute
+			SET '.$namestring.$separator.$parentstring.'
+			WHERE id = '.$id;
+
+        error_log($query);
+
+        $this->connection->query($query);
+    }
+
+
     function deleteAttribute($attribute_id) {
         if (!is_integer($attribute_id)) {
             error_log('ERROR! Wrong attribute parameter.');
@@ -55,24 +72,7 @@ class AttributesModel
     }
 
 
-    function updateAttribute($id, $name=false, $category_id=false) {
-
-        $namestring   = ($name   === false) ? '' : 'title = "'.$name.'"';
-        $parentstring = (!is_numeric($category_id) & $category_id === false) ? '' : 'categ_id = "'.$category_id.'"';
-        $separator    = ($namestring == '' or $parentstring == '') ? '' : ', ';
-
-        $query = '
-			UPDATE Attribute
-			SET '.$namestring.$separator.$parentstring.'
-			WHERE id = '.$id;
-
-        error_log($query);
-
-        $this->connection->query($query);
-    }
-
-
-    function selectAattributeIDByTitle($name){
+    function selectAttributeIDByTitle($name){
         $query = 'SELECT * FROM Attribute';
 
         $result = $this->connection->query($query);
@@ -91,7 +91,7 @@ class AttributesModel
     }
 
 
-    function  selectAttributesWithParams($id, $categoryID, $title, $count = 20, $offsetCount = 0){
+    function selectAttributesWithParams($id, $categoryID, $title, $count = 20, $offsetCount = 0){
 
         $query = "SELECT * FROM Attribute WHERE 1 AND ";
 
@@ -134,6 +134,67 @@ class AttributesModel
     }
 
 
+    function addValueToAttribute($attributeID, $value){
+        $query = "INSERT INTO Attribute_value (attribute_id, value) VALUES ($attributeID, '$value');";
+        return $this->connection->query($query);
+    }
+
+
+    function selectAttributeValueWithParams($id, $attributeID, $value, $count = 20, $offsetCount = 0){
+        $query = "SELECT * FROM Attribute_value WHERE 1 AND ";
+
+        if($id && is_int($id)){
+            $query .= "id = $id AND ";
+        }
+
+        if($attributeID && is_int($attributeID)) {
+            $query .= " attribute_id = $attributeID AND ";
+        }
+
+        if($value){
+            $query .= "value = '$value' AND ";
+        }
+
+        if(!is_int($count))
+            $count = 20;
+        if(!is_int($offsetCount))
+            $offsetCount = 0;
+
+        $query = substr($query,0,strlen($query)-4);
+        $query .= " LIMIT $offsetCount, $count";
+
+        $result = $this->connection->query($query);
+
+        if($result !== false){
+            $result->data_seek(0);
+            $list = array();
+            while($row = $result->fetch_assoc()){
+                array_push($list, $row);
+            }
+
+            $result->close();
+            return $list;
+        }
+
+        return array("ERROR");
+    }
+
+
+    function updateAttributeValue($id, $attributeID, $value){
+        $query = "UPDATE Attribute_value SET attribute_id=$attributeID, value='$value' WHERE id = $id";
+        return $this->connection->query($query);
+    }
+
+
+    function deleteAttributeValue($id){
+        if(!is_int($id))
+            return false;
+
+        $query = "DELETE FROM Attribute_value WHERE id = $id";
+        return $this->connection->query($query);
+    }
+
+
     function echoAttributesList() {
 
         $query = '
@@ -160,5 +221,5 @@ class AttributesModel
         }
     }
 
-//*/
+
 }

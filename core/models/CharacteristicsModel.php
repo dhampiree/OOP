@@ -64,7 +64,7 @@ class CharacteristicsModel
 
 
     function selectCharacteristicByTitle($title){
-        $query = "SELECT * FROM Characteristics WHERE title = $title";
+        $query = "SELECT * FROM Characteristics WHERE title = '$title'";
         $result = $this->connection->query($query);
 
         if($result !== false){
@@ -78,13 +78,12 @@ class CharacteristicsModel
 
 
     function updateCharacteristicByID($id, $newTitle){
-        $query = "UPDATE Characteristics SET title=$newTitle WHERE id = $id";
+        $query = "UPDATE Characteristics SET title='$newTitle' WHERE id = $id";
         return $this->connection->query($query);
     }
 
 
     function deleteCharacteristic($id){
-
         if(!is_int($id))
             return false;
 
