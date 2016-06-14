@@ -125,15 +125,16 @@ class OrdersModel
         return $this->connection->query($query);
     }
 
-    // SELECT id, order_id, exemplar_id, amount, price FROM Order_filling WHERE 1
-    // INSERT INTO Order_filling(id, order_id, exemplar_id, amount, price) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5])
-    // UPDATE Order_filling SET id=[value-1],order_id=[value-2],exemplar_id=[value-3],amount=[value-4],price=[value-5] WHERE 1
+    /*
+     * Дальше методы для таблицы Order_filling
+     */
+
     function addOrderFilling($orderID, $exemplarID, $amount, $price){
         $query = "INSERT INTO Order_filling(order_id, exemplar_id, amount, price) VALUES ($orderID, $exemplarID, $amount, $price)";
         return $this->connection->query($query);
     }
 
-    
+
     function updateOrderFilling($id, $orderID, $exemplarID, $amount, $price){
         $query = "UPDATE Order_filling SET order_id=$orderID, exemplar_id=$exemplarID, amount=$amount, price=$price WHERE id = $id";
         return $this->connection->query($query);

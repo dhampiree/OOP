@@ -134,6 +134,11 @@ class AttributesModel
     }
 
 
+
+    /*
+     * Дальше методы для таблицы Atribute_value
+     */
+
     function addValueToAttribute($attributeID, $value){
         $query = "INSERT INTO Attribute_value (attribute_id, value) VALUES ($attributeID, '$value');";
         return $this->connection->query($query);
